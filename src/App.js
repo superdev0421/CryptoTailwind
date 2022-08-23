@@ -8,7 +8,8 @@ Author:   Edward Liu
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import CryptoTable from "./component/CryptoTable";
+// import CryptoTable from "./component/CryptoTable/CryptoTable";
+import Container from "./Container/Container";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -16,9 +17,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="App">
-        <CryptoTable />
-      </div>
+      <Container />
     </QueryClientProvider>
   );
 }

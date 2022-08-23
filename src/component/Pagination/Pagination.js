@@ -10,6 +10,7 @@ import React from "react";
 
 function Pagination({ currentPage, totalPage, onSelectPage }) {
   const items = [];
+  //  Configuring Items
   for (let i = 1; i <= totalPage; i++) {
     items.push(
       <li key={i}>
