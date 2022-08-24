@@ -22,8 +22,16 @@ const fetchData = async () => {
 
 function Container() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(5);
-  const [tableData, setTableData] = useState([]);
+  const [totalPage, setTotalPage] = useState(1);
+  const [tableData, setTableData] = useState([
+    // { name: "A", symbol: "A", priceUsd: "100", marketCapUsd: "500" },
+    // { name: "G", symbol: "G", priceUsd: "700", marketCapUsd: "3500" },
+    // { name: "C", symbol: "C", priceUsd: "300", marketCapUsd: "1500" },
+    // { name: "F", symbol: "F", priceUsd: "600", marketCapUsd: "3000" },
+    // { name: "E", symbol: "E", priceUsd: "500", marketCapUsd: "2500" },
+    // { name: "D", symbol: "D", priceUsd: "400", marketCapUsd: "2000" },
+    // { name: "B", symbol: "B", priceUsd: "200", marketCapUsd: "1000" },
+  ]);
   const [pageSize, setPageSize] = useState(10);
   const { status, isStale, isFetching, error, data } = useQuery(
     "cryptoInfo",
@@ -44,7 +52,6 @@ function Container() {
       setCurrentPage(1);
       setTotalPage(Math.ceil(data.data.length / pageSize));
     }
-    console.log("useEffect");
   }, [status]);
 
   let content;

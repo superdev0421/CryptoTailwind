@@ -6,6 +6,7 @@ Author:   Edward Liu
 ----------------------------------------
 */
 
+//  External Dependencies
 import React from "react";
 
 function Pagination({ currentPage, totalPage, onSelectPage }) {

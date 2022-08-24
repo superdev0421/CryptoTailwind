@@ -6,15 +6,54 @@ Author:   Edward Liu
 ----------------------------------------
 */
 
+//  External Dependencies
+import { useState } from "react";
+
+//  Internal Dependencies
+import "./CryptoTable.css";
+
 function CryptoTable({ data, currentPage, pageSize }) {
+  const [sortFlag, setSortFlag] = useState(0);
   //  Configuring Items
+  data.sort((item1, item2) => {
+    const priceUsdA = Number(item1.priceUsd);
+    const marketCapUsdA = Number(item1.marketCapUsd);
+    const priceUsdB = Number(item2.priceUsd);
+    const marketCapUsdB = Number(item2.marketCapUsd);
+    switch (sortFlag) {
+      case -2:
+        return marketCapUsdA < marketCapUsdB
+          ? 1
+          : marketCapUsdA === marketCapUsdB
+          ? 0
+          : -1;
+      case -1:
+        return priceUsdA < priceUsdB ? 1 : priceUsdA === priceUsdB ? 0 : -1;
+      case 0:
+        return 1;
+      case 1:
+        return priceUsdA > priceUsdB ? 1 : priceUsdA === priceUsdB ? 0 : -1;
+      case 2:
+        return marketCapUsdA > marketCapUsdB
+          ? 1
+          : marketCapUsdA === marketCapUsdB
+          ? 0
+          : -1;
+      default:
+        break;
+    }
+    return 0;
+  });
   const tableContent = data.map((items, index) => {
     if (
       index >= (currentPage - 1) * pageSize &&
       index < currentPage * pageSize
     ) {
       return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr
+          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+          key={items.symbol}
+        >
           <th
             scope="row"
             className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -22,12 +61,19 @@ function CryptoTable({ data, currentPage, pageSize }) {
             {items.name}
           </th>
           <td className="py-4 px-6">{items.symbol}</td>
-          <td className="py-4 px-6">{items.priceUsd}</td>
-          <td className="py-4 px-6">{items.marketCapUsd}</td>
+          <td className="py-4 px-6">{Number(items.priceUsd).toFixed(2)}</td>
+          <td className="py-4 px-6">{Number(items.marketCapUsd).toFixed(2)}</td>
         </tr>
       );
     }
+    return null;
   });
+
+  const onSortClick = (columnNumber) => {
+    if (sortFlag === Math.abs(columnNumber)) {
+      setSortFlag(-columnNumber);
+    } else setSortFlag(columnNumber);
+  };
 
   return (
     <div>
@@ -51,7 +97,7 @@ function CryptoTable({ data, currentPage, pageSize }) {
               <th scope="col" className="py-3 px-6">
                 <div className="flex items-center">
                   Price
-                  <a href="#">
+                  <div className="sortIcon" onClick={(e) => onSortClick(1)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="ml-1 w-3 h-3"
@@ -61,13 +107,13 @@ function CryptoTable({ data, currentPage, pageSize }) {
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
-                  </a>
+                  </div>
                 </div>
               </th>
               <th scope="col" className="py-3 px-6">
                 <div className="flex items-center">
                   Market Capacity
-                  <a href="#">
+                  <div className="sortIcon" onClick={(e) => onSortClick(2)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="ml-1 w-3 h-3"
@@ -77,7 +123,7 @@ function CryptoTable({ data, currentPage, pageSize }) {
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
-                  </a>
+                  </div>
                 </div>
               </th>
             </tr>
